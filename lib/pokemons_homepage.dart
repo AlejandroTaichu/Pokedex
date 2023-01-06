@@ -13,9 +13,9 @@ class _PokemonHomepageState extends State<PokemonHomepage> {
   Future<List<Pokemons>> callPokemon() async {
     var pokeList = <Pokemons>[];
 
-    var p1 = Pokemons(pokeId: 1, name: "Charizard", health: 100, power: 250);
-    var p2 = Pokemons(pokeId: 2, name: "Squirtle", health: 150, power: 300);
-    var p3 = Pokemons(pokeId: 3, name: "Balbazar", health: 300, power: 500);
+    var p1 = Pokemons(pokeId: 1, name: "Charmender.png", health: 100, power: 250);
+    var p2 = Pokemons(pokeId: 2, name: "squirtle.png", health: 150, power: 300);
+    var p3 = Pokemons(pokeId: 3, name: "balbazar.png", health: 300, power: 500);
 
     pokeList.add(p1);
     pokeList.add(p2);
@@ -23,44 +23,59 @@ class _PokemonHomepageState extends State<PokemonHomepage> {
 
     return pokeList;
   }
+
+  late final future = callPokemon();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("POKEDEX"),backgroundColor: Colors.green),
+      appBar:
+          AppBar(title: const Text("POKEDEX"), backgroundColor: Colors.green),
       body: FutureBuilder<List<Pokemons>>(
-        builder: (context,snapshot){
-          if(snapshot.hasData){
+        future: future,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
             var pokeList = snapshot.data;
             return ListView.builder(
               itemCount: pokeList!.length,
-              itemBuilder: (context,indeks){
+              itemBuilder: (context, indeks) {
                 var pokemon = pokeList[indeks];
                 return GestureDetector(
-                  onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => PokemonDetail(pokemon: pokemon)));
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                PokemonDetail(pokemon: pokemon)));
                   },
-                 child: Card(
+                  child: Card(
                     child: Row(
-                    children: [
-                      SizedBox(width: 150,height: 150,
-                        child: Image.asset("images/${pokemon.name}")),
-                         Column(crossAxisAlignment: CrossAxisAlignment.start,
-                         children: [
-                           Text(pokemon.name,style: TextStyle(fontSize: 25),),
-                            const SizedBox(height: 50,),
-                          Text("${pokemon.health}"),
-                         ],
-                         ),
-                    const Spacer(),
-                    const Icon(Icons.keyboard_arrow_right)
-                    ],
+                      children: [
+                        SizedBox(
+                            width: 150,
+                            height: 150,
+                            child: Image.asset("images/${pokemon.name}")),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              pokemon.name,
+                              style: TextStyle(fontSize: 25),
+                            ),
+                            const SizedBox(
+                              height: 50,
+                            ),
+                            Text("${pokemon.health}"),
+                          ],
+                        ),
+                        const Spacer(),
+                        const Icon(Icons.keyboard_arrow_right)
+                      ],
                     ),
-                 ),
+                  ),
                 );
               },
             );
-          }else{
+          } else {
             return const Center();
           }
         },
